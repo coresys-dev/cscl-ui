@@ -43,10 +43,10 @@ wire your app's real data/callbacks into its generic props, done.
 | Folder | What's in it |
 |---|---|
 | `theme/` | `tokens.css` (colors/radii/shadows/light-dark theming) + `motion.css` (shared easing + keyframes). The foundation everything else assumes. |
-| `primitives/` | `Button`, `IconButton`, `Card`, `Switch`, `SegmentedControl`, `Chip`, `Slider` — the smallest reusable pieces, `cva`-variant driven. |
-| `overlays/` | `ConfirmDialog`, `ContextMenu`, `IconPicker`, `DetailsDialog` — modal/popup patterns. |
-| `feedback/` | `ToastProvider`, `InlineBanner`, `FatalErrorScreen`, `ProgressIndicator`, `JobRow`, `JobsPopover`, `LogConsole` — telling the user what's happening. |
-| `data-display/` | `TreeView`/`TreeItem` (with pointer-based drag reorder/reparent), `ListView`/`ListRow`/`InlineRenameInput`, `Sparkline`, `Waveform` — showing collections of things. |
+| `primitives/` | `Button`, `IconButton`, `Card`, `Switch`, `SegmentedControl`, `Chip`, `Slider`, `Badge` — the smallest reusable pieces, `cva`-variant driven. |
+| `overlays/` | `ConfirmDialog`, `ConsentDialog`, `ContextMenu`, `DropdownMenu`, `IconPicker`, `DetailsDialog`, `UpdateDialog` — modal/popup patterns. |
+| `feedback/` | `ToastProvider`, `InlineBanner`, `FatalErrorScreen`, `ProgressIndicator`, `JobRow`, `JobsPopover`, `LogConsole`, `EmptyState`, `ErrorState`, `Skeleton` — telling the user what's happening. |
+| `data-display/` | `TreeView`/`TreeItem` (with pointer-based drag reorder/reparent), `ListView`/`ListRow`/`InlineRenameInput`, `Sparkline`, `Waveform`, `ImageCaption`, `CreditsList` — showing collections of things. |
 | `inputs/` | `Combobox`, `TagInput`, `ShortcutRecorder`, `HeroSearchInput` — things the user types into. |
 | `navigation/` | `TabBar`, `SidebarTabsDialog` — moving between views. |
 | `window/` | `TitleBar`, `WindowControls` — custom Tauri window chrome (see `window/README.md` for the required Rust-side command). |
@@ -64,6 +64,19 @@ mined for its generic substrate: e.g. SLDR's `SettingsModal` (icon-rail tabs
 + settings panels) became `navigation/SidebarTabsDialog` (the shell only —
 your app supplies the panels), and three near-identical toggle-pill
 components scattered across SLDR collapsed into one `primitives/Chip`.
+
+The same mining applied to CORE (the app launcher): its `AppActionsMenu`
+(an overflow "⋯" menu positioned off a trigger button, distinct from a
+right-click `ContextMenu`) became `overlays/DropdownMenu`; its
+`PrivacyConsentDialog` (a two-choice, no-"cancel" first-run prompt) became
+`overlays/ConsentDialog`; its `LauncherUpdateDialog` (self-update
+prompt/progress/restart flow) became `overlays/UpdateDialog`, generic over
+the app's own progress-event shape; and its `CreditsSection` (hardcoded
+team list) became `data-display/CreditsList`, which takes the credits as
+data. Components that stayed tied to CORE's app-install domain
+(`AppIcon`, `AppRunButton`, `AppVersionPickerDialog`) were left out — there
+was no generic substrate left once the install-pipeline types were
+stripped out.
 
 ## Testing
 
