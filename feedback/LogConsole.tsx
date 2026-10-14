@@ -20,7 +20,7 @@ export interface LogLine {
 
 const LEVEL_TEXT: Record<string, string> = {
   info: "text-text-muted",
-  warn: "text-warning",
+  warn: "text-accent-2",
   error: "text-danger",
 };
 
@@ -173,15 +173,15 @@ export function LogConsole({ lines, labels, onClear, onOpenFile, className }: Lo
           <div
             ref={scrollRef}
             onScroll={onScroll}
-            className="h-60 overflow-y-auto rounded-md border border-border bg-surface-sunken p-2 font-mono text-[11px] leading-relaxed"
+            className="h-60 overflow-y-auto rounded-md border border-border bg-bg p-2 font-mono text-[11px] leading-relaxed"
           >
             {visible.length === 0 ? (
               <p className="text-xs text-text-muted">{lines.length === 0 ? labels.empty : labels.noMatch}</p>
             ) : (
               visible.map((l, i) => (
                 <div key={`${l.timestamp ?? ""}-${i}`} className="whitespace-pre-wrap break-words">
-                  {l.timestamp !== undefined && <span className="text-text-subtle">{formatTime(l.timestamp)} </span>}
-                  {l.source && <span className="text-text-subtle">{l.source} </span>}
+                  {l.timestamp !== undefined && <span className="text-text-muted/70">{formatTime(l.timestamp)} </span>}
+                  {l.source && <span className="text-text-muted/70">{l.source} </span>}
                   <span className={LEVEL_TEXT[l.level] ?? "text-text-muted"}>{l.message}</span>
                 </div>
               ))

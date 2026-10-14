@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* CoreSys shared design tokens — the visual foundation behind every cscl-ui
- * component. Per the design system doc (D:\DEV\CORE-TOOLS\DESIGN-SYSTEM.md),
+ * component. Per the design system doc (the CoreSys design system artifact),
  * everything here is fixed across apps EXCEPT:
  *   --color-accent / --color-accent-muted   (per-app brand color)
  *   --font-sans                             (per-app typeface)
@@ -75,7 +75,7 @@ body {
     background-color 200ms var(--ease-in-out-quart),
     color 200ms var(--ease-in-out-quart);
   /* Per-app: set --font-sans (see below) rather than editing this rule. Self
-   * host the font — no CDN, no runtime network call (see DESIGN-SYSTEM.md §1
+   * host the font — no CDN, no runtime network call (see the design system artifact, "Adopting this system in an app"
    * for the two bundling paths). Falls back to system sans-serif until the
    * app's chosen font loads. */
   font-family: var(--font-sans, ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
@@ -101,7 +101,7 @@ textarea,
  * all-caps pill with no real descenders — the flex parent centers the
  * font's line box (ascent+descent), not the visible ink, so text reads as
  * sitting slightly above true center. Per-app: recompute this offset from
- * your chosen font's own metrics (see DESIGN-SYSTEM.md §1) — 0.06em is
+ * your chosen font's own metrics (see the design system artifact, "Adopting this system in an app") — 0.06em is
  * tuned for SLDR's Sora, not a universal constant. Apply to the text node
  * only, never an adjacent icon. */
 .optical-center-text {

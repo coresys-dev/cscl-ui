@@ -66,7 +66,7 @@ export function InlineBanner({
           type="button"
           onClick={onRetry}
           disabled={retrying}
-          className={cn("shrink-0 rounded px-2 py-1 transition-colors disabled:opacity-50", styles.button)}
+          className={cn("shrink-0 rounded-sm px-2 py-1 transition-colors disabled:opacity-50", styles.button)}
         >
           {retrying ? (retryingLabel ?? retryLabel) : retryLabel}
         </button>

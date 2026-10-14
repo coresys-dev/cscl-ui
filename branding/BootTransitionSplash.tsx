@@ -49,7 +49,7 @@ export interface BootTransitionSplashProps {
  * until data is ready, then slides (measured FLIP transform, not a fixed
  * offset) into its real resting place in the app's persistent chrome before
  * yielding to it — which then builds in the rest of its content
- * element-by-element (see DESIGN-SYSTEM.md §5.1, "Startup sequence"). */
+ * element-by-element (see the CoreSys design system artifact, "Startup sequence"). */
 export function BootTransitionSplash({
   ready,
   targetRef,

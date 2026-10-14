@@ -22,7 +22,7 @@ wire your app's real data/callbacks into its generic props, done.
    in your app's main CSS file, in that order. Override `--color-accent` /
    `--color-accent-muted` and `--font-sans` for your app's brand — nothing
    else in `theme/tokens.css` should change per-app (see
-   `D:\DEV\CORE-TOOLS\DESIGN-SYSTEM.md`, the canonical design doc this
+   the CoreSys design system artifact, the canonical design doc this
    library encodes).
 2. **Copy `lib/cn.ts`** — the classname-merge helper every component here
    uses.
