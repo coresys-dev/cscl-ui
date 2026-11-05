@@ -82,6 +82,6 @@ stripped out.
 
 `npm test` runs the plain-Node test suites (`lib/*.test.mjs`,
 `data-display/*.test.mjs`) — currently covering the pure logic in
-`lib/retry.ts` and `data-display/treeUtils.ts`. `npm run typecheck` type-checks
+`lib/retry.ts` and `data-display/treeUtils.ts`. `pnpm typecheck` type-checks
 the whole tree against the peer dependencies (installed as devDependencies
 here purely so this repo can typecheck itself standalone).

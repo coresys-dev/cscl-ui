@@ -4,9 +4,14 @@
   "private": true,
   "description": "CoreSys shared UI source library — copy-paste components and own them, shadcn-ui style. Not published/installed as a dependency; see README.",
   "type": "module",
+  "packageManager": "pnpm@11.23.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "node --test lib/*.test.mjs data-display/*.test.mjs"
+    "test": "node --test lib/*.test.mjs data-display/*.test.mjs",
+    "check": "pnpm typecheck && pnpm test"
   },
   "peerDependencies": {
     "@tauri-apps/api": "^2",
