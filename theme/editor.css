@@ -1,0 +1,252 @@
+/* RichTextEditor documents: Notion-like typography. Every value reads a token.
+ * Import once, after the theme: @import "@coresys/cscl-ui/theme/editor.css"; */
+.cs-doc-host {
+  min-height: 100%;
+}
+.cs-doc {
+  min-height: 100%;
+  padding-bottom: 30vh;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text);
+  caret-color: var(--color-accent);
+  word-wrap: break-word;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.cs-doc * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.cs-doc > * + * {
+  margin-top: 0.35em;
+}
+.cs-doc p {
+  margin: 0;
+}
+.cs-doc h1,
+.cs-doc h2,
+.cs-doc h3 {
+  margin: 1.2em 0 0.2em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.cs-doc > :first-child {
+  margin-top: 0;
+}
+.cs-doc h1 {
+  font-size: 1.75em;
+}
+.cs-doc h2 {
+  font-size: 1.4em;
+}
+.cs-doc h3 {
+  font-size: 1.18em;
+}
+.cs-doc ul,
+.cs-doc ol {
+  margin: 0.2em 0;
+  padding-left: 1.5em;
+}
+.cs-doc ul {
+  list-style: disc;
+}
+.cs-doc ul ul {
+  list-style: circle;
+}
+.cs-doc ol {
+  list-style: decimal;
+}
+.cs-doc li > p {
+  margin: 0;
+}
+.cs-doc li::marker {
+  color: var(--color-text-muted);
+}
+.cs-doc ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.2em;
+}
+.cs-doc ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+}
+.cs-doc ul[data-type="taskList"] li > label {
+  flex: none;
+  margin-top: 0.32em;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.cs-doc ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+.cs-doc ul[data-type="taskList"] input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+.cs-doc ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+.cs-doc blockquote {
+  margin: 0.4em 0;
+  padding: 0.1em 0 0.1em 1em;
+  border-left: 3px solid var(--color-text);
+}
+.cs-doc hr {
+  margin: 1.2em 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+.cs-doc hr.ProseMirror-selectednode {
+  border-top-color: var(--color-accent);
+}
+.cs-doc code {
+  padding: 0.15em 0.35em;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-hover);
+  color: var(--color-danger);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+.cs-doc pre {
+  margin: 0.5em 0;
+  padding: 0.9em 1em;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+.cs-doc pre code {
+  padding: 0;
+  background: none;
+  color: var(--color-text);
+  font-size: 0.85em;
+}
+.cs-doc a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-text-muted);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.cs-doc a:hover {
+  text-decoration-color: var(--color-accent);
+}
+.cs-doc strong {
+  font-weight: 600;
+}
+.cs-doc .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.cs-doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0 0.25em;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease-in-out-quart);
+}
+.cs-doc-link svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+.cs-doc-link:hover {
+  background: var(--color-surface-hover);
+}
+.cs-doc-link.is-missing {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  cursor: default;
+}
+.cs-doc .ProseMirror-selectednode .cs-doc-link,
+.cs-doc .cs-doc-link.ProseMirror-selectednode {
+  background: var(--color-accent-muted);
+}
+.cs-doc-host {
+  position: relative;
+}
+.cs-doc [data-text-color] {
+  color: color-mix(in srgb, var(--tc) 78%, var(--color-text));
+}
+.cs-doc mark[data-highlight] {
+  padding: 0.05em 0.1em;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--hc) 30%, transparent);
+  color: inherit;
+}
+/* A note on some words: a soft attention tint, the card opens on click. */
+.cs-doc .cs-comment {
+  background: color-mix(in srgb, var(--color-accent-2) 16%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--color-accent-2) 70%, transparent);
+  cursor: pointer;
+  transition: background-color 150ms var(--ease-in-out-quart);
+}
+.cs-doc .cs-comment:hover {
+  background: color-mix(in srgb, var(--color-accent-2) 28%, transparent);
+}
+
+/* A mention: its preview, then "@label (hint)" in muted text. */
+.cs-mention {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  max-width: 100%;
+  margin: 0.15em 0;
+  padding: 0.15em 0.4em 0.15em 0.15em;
+  border-radius: var(--radius-md);
+  vertical-align: middle;
+  line-height: 1.3;
+  cursor: grab;
+  /* Otherwise the webview may start dragging the name as text instead of the file. */
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: background-color 150ms var(--ease-in-out-quart);
+}
+.cs-mention * {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.cs-mention:hover {
+  background: var(--color-surface-hover);
+}
+.cs-mention:active {
+  cursor: grabbing;
+}
+.cs-mention__label {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.9em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cs-mention.is-missing .cs-mention__label {
+  text-decoration: line-through;
+}
+.cs-doc .ProseMirror-selectednode.cs-mention,
+.cs-doc .ProseMirror-selectednode .cs-mention {
+  background: var(--color-accent-muted);
+}
+
+.cs-mention.is-pending {
+  cursor: progress;
+  opacity: 0.75;
+}

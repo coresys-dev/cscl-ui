@@ -1,114 +1,147 @@
-/* Shared animation keyframes — import once alongside theme/tokens.css.
- * One easing curve (--ease-in-out-quart, defined in tokens.css), one small
- * set of durations. Consistency of motion across CoreSys apps matters more
- * than variety — don't add a one-off easing/duration for a single component. */
+/* One easing curve (--ease-in-out-quart), a small set of durations:
+ * 150, 200, 220, 280, 320ms. Consistency beats variety: don't add a one-off
+ * curve for a single component. */
+@theme {
+  /* Hover, focus and press transitions take the same curve as the entrances. */
+  --default-transition-timing-function: var(--ease-in-out-quart);
 
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(4px);
+  --animate-modal-in: modal-in 200ms var(--ease-in-out-quart);
+  --animate-modal-out: modal-out 150ms var(--ease-in-out-quart) forwards;
+  --animate-sheet-up: sheet-up 260ms var(--ease-in-out-quart);
+  --animate-overlay-in: overlay-in 200ms var(--ease-in-out-quart);
+  --animate-menu-in: menu-in 140ms var(--ease-in-out-quart);
+  --animate-menu-out: menu-in 120ms var(--ease-in-out-quart) reverse forwards;
+  --animate-toast-in: toast-in 220ms var(--ease-in-out-quart);
+  /* Staggered list entrance: set `animation-delay` inline, 30ms per row, first 10 rows only. */
+  --animate-item-in: item-in 320ms var(--ease-in-out-quart) both;
+  --animate-chrome-in: chrome-in 420ms var(--ease-in-out-quart) both;
+  --animate-favorite-pop: favorite-pop 260ms var(--ease-in-out-quart);
+  --animate-sidebar-in: sidebar-in 650ms var(--ease-in-out-quart) both;
+
+  @keyframes modal-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.96) translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+  @keyframes modal-out {
+    0% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.96) translateY(4px);
+    }
   }
-}
-.animate-modal-in {
-  animation: modal-in 200ms var(--ease-in-out-quart);
+  @keyframes sheet-up {
+    0% {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes overlay-in {
+    0% {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  /* Unfurls from the anchor corner: set `transform-origin` inline. */
+  @keyframes menu-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.92) translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  @keyframes toast-in {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes item-in {
+    0% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes chrome-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes reveal-mask {
+    0% {
+      clip-path: inset(0 50% round 0.5rem);
+    }
+    to {
+      clip-path: inset(0 round 0.5rem);
+    }
+  }
+  @keyframes favorite-pop {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.3);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes sidebar-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 }
 
-@keyframes overlay-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.animate-overlay-in {
-  animation: overlay-in 200ms var(--ease-in-out-quart);
-}
-
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.animate-toast-in {
-  animation: toast-in 220ms var(--ease-in-out-quart);
-}
-
-/* Element-by-element entrance (list rows, nav items) — apply once per
- * element with an inline `animation-delay` for the stagger, not separate
- * keyframes per index. `both` keeps it invisible before its turn and frozen
- * at rest once done. */
-@keyframes item-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.animate-item-in {
-  animation: item-in 320ms var(--ease-in-out-quart) both;
-}
-
-/* Floating chrome island reveal (window controls, a title bar) — a small
- * drop-and-settle, distinct from the plainer item-in used for list rows. */
-@keyframes chrome-in {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.animate-chrome-in {
-  animation: chrome-in 420ms var(--ease-in-out-quart) both;
-}
-
-/* Reveals a whole element's body (border/fill/shadow) growing outward from
- * its own center via clip-path, rather than content appearing inside an
- * already-visible box. Duration is driven from JS (element-specific), so
- * only the name/timing-function/fill-mode are set here. */
-@keyframes reveal-mask {
-  from {
-    clip-path: inset(0 50% 0 50% round 0.5rem);
-  }
-  to {
-    clip-path: inset(0 0 0 0 round 0.5rem);
-  }
-}
-.animate-reveal-mask {
+/* Duration is driven from JS (inline `animation-duration`). */
+@utility animate-reveal-mask {
   animation-name: reveal-mask;
   animation-timing-function: var(--ease-in-out-quart);
   animation-fill-mode: both;
 }
 
-/* Quick scale "pop" for a state going from off to on (e.g. a favorite/star
- * toggle) — trigger only on the false→true transition, never on initial
- * mount of an already-active element. */
-@keyframes favorite-pop {
-  0% {
-    transform: scale(1);
+/* `data-motion="always"` keeps its motion anyway: the boot sequence, which covers loading. */
+@media (prefers-reduced-motion: reduce) {
+  :not([data-motion="always"], [data-motion="always"] *),
+  :not([data-motion="always"], [data-motion="always"] *)::before,
+  :not([data-motion="always"], [data-motion="always"] *)::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
   }
-  40% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.animate-favorite-pop {
-  animation: favorite-pop 260ms var(--ease-in-out-quart);
 }

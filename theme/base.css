@@ -1,0 +1,129 @@
+/* Desktop-app defaults every CoreSys app shares. */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 200ms var(--ease-in-out-quart),
+    color 200ms var(--ease-in-out-quart);
+}
+
+/* A desktop tool, not a web page: no drag-selection, except where text is edited. */
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+input,
+textarea,
+[contenteditable="true"],
+.selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Flex centring aligns the font's line box, not its ink: all-caps and
+ * icon-adjacent text reads slightly high. Nudge the text node only, never the
+ * icon. 0.06em is Sora's (capHeight/2 − (ascent − descent)/2); recompute it
+ * for another face with `--optical-offset`. */
+.optical-center-text {
+  display: inline-block;
+  transform: translateY(var(--optical-offset, 0.06em));
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}
+
+/* A wheel-driven strip with no visible scrollbar. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background-color: var(--color-accent-muted);
+  color: var(--color-text);
+}
+
+/* In `@layer base` so a `focus-visible:outline-none` utility can still override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Scroll edges fade instead of cutting content: `ScrollArea` / `useScrollFade`
+ * set the class and the two lengths, which animate. */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+.scroll-fade-x,
+.scroll-fade-y,
+.widget-content > [data-fade] {
+  transition:
+    --fade-start 200ms var(--ease-in-out-quart),
+    --fade-end 200ms var(--ease-in-out-quart);
+}
+.scroll-fade-x,
+.widget-content > [data-fade="x"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+}
+.scroll-fade-y,
+.widget-content > [data-fade="y"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+}
+
+/* A dashboard widget's root element is its scroller: content larger than the
+ * card scrolls instead of being cut, scrollbar hidden, edges faded. */
+.widget-content > * {
+  overflow: auto !important;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.widget-content > *::-webkit-scrollbar {
+  display: none;
+}
+/* Centred content that overflows would lose its start. */
+.widget-content > .justify-center {
+  justify-content: safe center !important;
+}
+.widget-content > .items-center {
+  align-items: safe center !important;
+}

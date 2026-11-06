@@ -1,0 +1,9 @@
+/* Import after Tailwind, then point Tailwind at the components:
+ *
+ *   @import "tailwindcss";
+ *   @import "@coresys/cscl-ui/theme.css";
+ *   @source "../node_modules/@coresys/cscl-ui/dist";
+ */
+@import "./tokens.css";
+@import "./motion.css";
+@import "./base.css";
