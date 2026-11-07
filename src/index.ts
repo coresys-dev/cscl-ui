@@ -105,6 +105,7 @@ export * from "./web/Accordion";
 
 // Branding
 export * from "./branding/CoresysMark";
+export * from "./branding/SplashMark";
 export * from "./branding/WordTicker";
 export * from "./branding/BootTransitionSplash";
 

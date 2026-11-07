@@ -1,6 +1,6 @@
 {
   "name": "@coresys/cscl-ui",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "CoreSys component library: React + Tailwind v4 components, tokens and motion shared by every CoreSys app.",
   "type": "module",
   "license": "MIT",
