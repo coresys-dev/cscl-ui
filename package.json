@@ -1,6 +1,6 @@
 {
   "name": "@coresys/cscl-ui",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "CoreSys component library: React + Tailwind v4 components, tokens and motion shared by every CoreSys app.",
   "type": "module",
   "license": "MIT",
@@ -40,8 +40,8 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "prepare": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/fix-esm.mjs",
+    "prepare": "tsc -p tsconfig.build.json && node scripts/fix-esm.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test \"src/**/*.test.*\"",
     "check": "pnpm typecheck && pnpm test",
