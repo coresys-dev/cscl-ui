@@ -1,6 +1,7 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { Clock, FileText, FolderOpen, LayoutGrid, Plus, Settings, Upload } from "lucide-react";
 import {
+  Backdrop,
   Badge,
   Button,
   calendarHeatmap,
@@ -17,13 +18,14 @@ import {
   WidgetGrid,
   Waveform,
   weekDays,
+  type BackdropProps,
   type CalendarEntry,
   type Box,
 } from "../../src";
 import { MarkdownText } from "../../src/markdown";
 import { RichTextEditor } from "../../src/editor";
 
-export const SCENE2_HEIGHT: Record<string, number> = { palette: 620, calendar: 680, media: 460, dashboard: 640, editor: 620 };
+export const SCENE2_HEIGHT: Record<string, number> = { palette: 620, calendar: 680, media: 460, dashboard: 640, editor: 620, backdrops: 760 };
 
 function Frame({ id, children, className = "" }: { id: string; children: ReactNode; className?: string }) {
   return (
@@ -242,6 +244,56 @@ export function EditorScene() {
             Share
           </Button>
         </div>
+      </div>
+    </Frame>
+  );
+}
+
+const BACKDROPS: { name: string; props: BackdropProps[] }[] = [
+  { name: "dots", props: [{ variant: "dots" }] },
+  { name: "grid", props: [{ variant: "grid", fade: "edges" }] },
+  { name: "glow", props: [{ variant: "glow", fade: "top", strength: "strong" }] },
+  { name: "beam", props: [{ variant: "beam", fade: "top" }] },
+  { name: "orbits", props: [{ variant: "orbits" }] },
+  { name: "contours", props: [{ variant: "contours", fade: "edges" }] },
+  { name: "waves", props: [{ variant: "waves" }] },
+  { name: "grain", props: [{ variant: "grain", fade: "none", strength: "strong" }] },
+];
+
+const LIGHT_VARS = { "--color-bg": "#fafafa", "--color-text": "#111111", "--color-text-muted": "#6b7280", "--color-border": "#e5e7eb", color: "#111111" } as CSSProperties;
+
+function BackdropTile({ title, code, layers, style, tall }: { title: string; code: string; layers: BackdropProps[]; style?: CSSProperties; tall?: boolean }) {
+  return (
+    <div className={`relative isolate overflow-hidden rounded-lg border border-border bg-bg ${tall ? "h-[200px]" : "h-[220px]"}`} style={style}>
+      {layers.map((p, i) => (
+        <Backdrop key={i} {...p} />
+      ))}
+      <div className="absolute inset-x-4 bottom-3.5 flex items-end justify-between gap-3">
+        <span className="text-sm font-medium text-text">{title}</span>
+        <code className="truncate rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-[10px] text-text-muted">{code}</code>
+      </div>
+    </div>
+  );
+}
+
+export function BackdropsScene() {
+  return (
+    <Frame id="backdrops" className="flex flex-col gap-4 p-10">
+      <div className="grid grid-cols-4 gap-4">
+        {BACKDROPS.map((b) => (
+          <BackdropTile key={b.name} title={b.name} code={`variant="${b.name}"`} layers={b.props} />
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <BackdropTile
+          tall
+          title="Accent tone"
+          code={`tone="accent"`}
+          layers={[{ variant: "glow", tone: "accent", fade: "top", strength: "strong" }, { variant: "dots", tone: "accent", fade: "top", strength: "soft" }]}
+          style={{ "--color-accent": "#38d49b" } as CSSProperties}
+        />
+        <BackdropTile tall title="Stacked" code="glow + orbits" layers={[{ variant: "glow", fade: "center", strength: "strong" }, { variant: "orbits" }]} />
+        <BackdropTile tall title="Light theme" code={`variant="contours"`} layers={[{ variant: "contours", fade: "edges", strength: "strong" }]} style={LIGHT_VARS} />
       </div>
     </Frame>
   );

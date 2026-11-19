@@ -108,6 +108,7 @@ export * from "./branding/CoresysMark";
 export * from "./branding/SplashMark";
 export * from "./branding/WordTicker";
 export * from "./branding/BootTransitionSplash";
+export * from "./branding/Backdrop";
 
 // Utilities and hooks
 export * from "./lib/cn";
@@ -123,6 +124,7 @@ export * from "./lib/heat";
 export * from "./lib/duration";
 export * from "./lib/calendar";
 export * from "./lib/media";
+export * from "./lib/ambient";
 export * from "./lib/grid";
 export * from "./lib/overflow";
 export * from "./lib/waveformPath";

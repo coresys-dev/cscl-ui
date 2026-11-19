@@ -17,6 +17,7 @@ SLDR, DRIFT, Planwise, Crayon and CORE all look and behave like one family. That
 - **Built for desktop tools.** Floating panels over a black canvas, custom window chrome for Tauri (native traffic lights on macOS included), no accidental text selection, thin scrollbars, a boot sequence that slides your identity into place.
 - **Keyboard and screen reader first.** Focus traps in modals, a stack so Escape closes only the top overlay, roving focus in tabs and menus, `aria-*` states everywhere, never colour alone.
 - **Honest motion.** One easing curve, five durations, and reduced-motion respected everywhere except the boot splash.
+- **Never a flat black.** Quiet animated textures (dots, grid, glow, orbits, contours…) to put behind a section, in the theme's own colours.
 - **No i18n lock-in.** Components never translate. Content strings come from you; fixed interface strings (Close, Remove, Cancel…) have English defaults you override through a `labels` prop.
 - **Light theme included.** One attribute on `<html>`.
 
@@ -82,6 +83,12 @@ The same components under the default neutral accent, three brand accents, and t
 
 ![The same card rendered with the neutral default, emerald, violet and blue accents, then in the light theme.](docs/showroom/theming.png)
 
+### Backdrops
+
+Eight textures to put behind a section so a black canvas never reads flat: dots, grid, glow, beam, orbits, contours, waves and grain. Each moves slowly (a spotlight wanders, a light runs along a line, arcs turn), fades into its neighbours and stays a few percent of the text colour, so it follows the accent and the light theme.
+
+![Eight backdrop textures on black tiles, then the same in the accent colour, a glow stacked under orbits, and contours in the light theme.](docs/showroom/backdrops.png)
+
 ### What's inside
 
 | Group | Components |
@@ -98,9 +105,9 @@ The same components under the default neutral accent, three brand accents, and t
 | Markdown³ | `MarkdownText` |
 | Navigation | `Tabs` · `Breadcrumbs` · `SidebarTabsDialog` · `TabBar`¹ |
 | Web | `SiteHeader` · `Hero` · `ProductRow` · `FeatureGrid` · `SiteFooter` · `Pagination` · `Link` · `Accordion` |
-| Branding | `CoresysMark` · `WordTicker` · `BootTransitionSplash` |
+| Branding | `CoresysMark` · `WordTicker` · `BootTransitionSplash` · `Backdrop` |
 | Window (Tauri)¹ | `WindowControls` · `TitleBar` · `SyncLinkProvider` · `useTauriFileDrop` |
-| Hooks & utilities | `cn` · `useTheme` · `useAsyncResource` · `useDebouncedValue` · `useListKeyboardNav` · `useResizableWidth` · `useInfiniteScrollSentinel` · `useTypewriterPlaceholder` · `useScrollFade` · `useWheelScrollX` · `useNow` · colour, calendar, timecode and grid helpers · `retrySchedule` · `planTreeMove` · `resolveLucideIcon` |
+| Hooks & utilities | `cn` · `useTheme` · `useAsyncResource` · `useDebouncedValue` · `useListKeyboardNav` · `useResizableWidth` · `useInfiniteScrollSentinel` · `useTypewriterPlaceholder` · `useScrollFade` · `useWheelScrollX` · `useNow` · colour, calendar, timecode, grid and backdrop (`ambientMix`, `ambientContours`, `ambientWaves`) helpers · `retrySchedule` · `planTreeMove` · `resolveLucideIcon` |
 
 ¹ From `@coresys/cscl-ui/tauri`. ² From `@coresys/cscl-ui/editor`. ³ From `@coresys/cscl-ui/markdown`.
 
@@ -142,7 +149,7 @@ In your app's main CSS, after Tailwind:
 @source "../node_modules/@coresys/cscl-ui/dist";
 ```
 
-`theme.css` brings three layers you can also import one by one from `@coresys/cscl-ui/theme/`: `tokens.css` (colours, radii, shadows, fonts), `motion.css` (easing and keyframes) and `base.css` (desktop defaults: no drag-selection, thin scrollbars, focus ring, scroll fades). With the editor, add `@import "@coresys/cscl-ui/theme/editor.css";` for the document typography.
+`theme.css` brings four layers you can also import one by one from `@coresys/cscl-ui/theme/`: `tokens.css` (colours, radii, shadows, fonts), `motion.css` (easing and keyframes), `ambient.css` (the slow loops behind `Backdrop` and `animate-bob`) and `base.css` (desktop defaults: no drag-selection, thin scrollbars, focus ring, scroll fades). With the editor, add `@import "@coresys/cscl-ui/theme/editor.css";` for the document typography.
 
 ### Make it yours
 
@@ -234,6 +241,31 @@ import { TitleBar, WindowControls } from "@coresys/cscl-ui/tauri";
 
 Windows/Linux need `"decorations": false`; macOS keeps native decorations with `"titleBarStyle": "Overlay"` and moves the traffic lights into the island. That needs one Rust command in your app: copy it from [`src/window/README.md`](src/window/README.md).
 
+### Backdrops
+
+A `Backdrop` fills its section from underneath. Give the section `relative isolate`; nothing else changes in its content.
+
+```tsx
+import { Backdrop } from "@coresys/cscl-ui";
+
+<section className="relative isolate py-32">
+  <Backdrop variant="contours" fade="edges" />
+  <h2>Less hunting. More making.</h2>
+</section>
+```
+
+| Prop | Values | |
+|---|---|---|
+| `variant` | `dots` · `grid` · `glow` · `beam` · `orbits` · `contours` · `waves` · `grain` | The texture. |
+| `fade` | `center` (default) · `top` · `bottom` · `edges` · `none` | Where it fades out. `edges` melts into the sections above and below; `top` suits a hero. |
+| `strength` | `soft` · `normal` (default) · `strong` | ×0.6, ×1 or ×1.5 on every opacity. |
+| `tone` | `neutral` (default) · `accent` | Text colour, or the accent. |
+| `color` | any CSS colour | Overrides `tone`, for a product colour on a web page. |
+| `animated` | `true` (default) | `false` keeps it still. Motion always stops under `prefers-reduced-motion`. |
+| `fixed` | `false` (default) | Pins it to the viewport: one `<Backdrop variant="grain" fade="none" strength="strong" fixed />` per layout gives the whole page a film grain. |
+
+Stack two for a stronger spot (`glow` under `orbits` for a closing call to action). A container with an opaque background hides a fixed grain: give it its own grain, without `fixed`. For a resting float on a mark or an app icon, use `animate-bob` and stagger with a negative `animation-delay`.
+
 ## Conventions
 
 - **Colour is a token, always.** Components use `bg-surface`, `text-text-muted`, `border-border`… never a literal colour. `accent` marks state (selected, active, focused) and the one primary action, never decoration. `accent-2` means attention, `danger` means destructive.
@@ -241,7 +273,8 @@ Windows/Linux need `"decorations": false`; macOS keeps native decorations with `
 - **Copy.** Sentence case, address the user as *you*, no exclamation marks, no emoji. Buttons name the act ("Remove", "Update now"), never "OK". Small labels are uppercase.
 - **Strings.** Content (titles, bodies, action names, counts) is a required prop. Fixed interface strings take a `labels` prop with English defaults. Pluralise and format before passing.
 - **Icons.** `lucide-react` only. 14px in dense rows, 16px in buttons, 24px in empty states.
-- **Motion.** `--ease-in-out-quart` and the `animate-*` utilities from `motion.css`. Don't add a one-off curve.
+- **Motion.** `--ease-in-out-quart` and the `animate-*` utilities from `motion.css`. Don't add a one-off curve. Slow ambient loops (7 to 60s) live apart in `ambient.css` and only drive decoration.
+- **Backdrops stay quiet.** Neutral by default, a few percent of the text colour; tint one only to carry a product's identity (`tone="accent"` on an app's own page), never to mark state. One texture per section, two at most.
 
 The full rules, with every token and component card, live in the CoreSys design system.
 
@@ -272,7 +305,7 @@ The showroom is in `showroom/` (run `pnpm install` there once). With it running,
 ### Layout
 
 ```
-theme/       tokens.css · motion.css · base.css · index.css
+theme/       tokens.css · motion.css · ambient.css · base.css · index.css
 src/
   primitives/  inputs/  overlays/  feedback/  data-display/
   navigation/  web/  media/  calendar/  dashboard/  branding/

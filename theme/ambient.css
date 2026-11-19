@@ -1,0 +1,171 @@
+/* Ambient motion: the slow loops behind `Backdrop` (branding/Backdrop.tsx) and
+ * the gentle `animate-bob` float. These are background textures, not
+ * interface feedback, so they sit outside the 150–320ms interface durations:
+ * 7 to 60 seconds, on the same --ease-in-out-quart curve (linear for
+ * rotations and travelling lights, which must not ease). Keep them barely
+ * visible: a texture you notice moving is too strong. */
+@theme {
+  --animate-ambient-spin: ambient-spin 60s linear infinite;
+  --animate-ambient-spin-fast: ambient-spin 28s linear infinite;
+  --animate-ambient-drift: ambient-drift 22s var(--ease-in-out-quart) infinite alternate;
+  --animate-ambient-breathe: ambient-breathe 9s var(--ease-in-out-quart) infinite;
+  --animate-ambient-float: ambient-float 26s var(--ease-in-out-quart) infinite alternate;
+  --animate-ambient-sway: ambient-sway 14s var(--ease-in-out-quart) infinite alternate;
+  --animate-ambient-drop: ambient-drop 7s var(--ease-in-out-quart) infinite;
+  --animate-ambient-twinkle: ambient-twinkle 7s var(--ease-in-out-quart) infinite;
+  --animate-ambient-wander: ambient-wander 30s var(--ease-in-out-quart) infinite;
+  /* Travelling light along a path drawn with `pathLength="1000"`. */
+  --animate-ambient-run: ambient-run 18s linear infinite;
+  --animate-ambient-run-slow: ambient-run 26s linear infinite reverse;
+  --animate-ambient-run-fast: ambient-run 9s linear infinite;
+  --animate-ambient-grain: ambient-grain 2.4s steps(1) infinite;
+  /* A resting float for marks and app icons: 5px, 5.5s. Stagger with a negative `animation-delay`. */
+  --animate-bob: bob 5.5s var(--ease-in-out-quart) infinite;
+
+  @keyframes ambient-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes ambient-drift {
+    0% {
+      transform: translate3d(-3%, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(3%, 2%, 0) scale(1.06);
+    }
+  }
+  @keyframes ambient-breathe {
+    0%,
+    to {
+      opacity: 0.75;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes ambient-float {
+    0% {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(-18px, 10px);
+    }
+  }
+  @keyframes ambient-sway {
+    0% {
+      transform: rotate(-2.5deg);
+    }
+    to {
+      transform: rotate(2.5deg);
+    }
+  }
+  @keyframes ambient-drop {
+    0% {
+      background-position: 0 -60%;
+    }
+    to {
+      background-position: 0 160%;
+    }
+  }
+  @keyframes ambient-twinkle {
+    0%,
+    to {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes ambient-wander {
+    0%,
+    to {
+      -webkit-mask-position: 15% 25%;
+      mask-position: 15% 25%;
+    }
+    33% {
+      -webkit-mask-position: 80% 35%;
+      mask-position: 80% 35%;
+    }
+    66% {
+      -webkit-mask-position: 55% 85%;
+      mask-position: 55% 85%;
+    }
+  }
+  @keyframes ambient-run {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -1000;
+    }
+  }
+  @keyframes ambient-grain {
+    0%,
+    to {
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
+    }
+    20% {
+      -webkit-mask-position: -37px 21px;
+      mask-position: -37px 21px;
+    }
+    40% {
+      -webkit-mask-position: 52px -44px;
+      mask-position: 52px -44px;
+    }
+    60% {
+      -webkit-mask-position: -18px 63px;
+      mask-position: -18px 63px;
+    }
+    80% {
+      -webkit-mask-position: 71px 9px;
+      mask-position: 71px 9px;
+    }
+  }
+  @keyframes bob {
+    0%,
+    to {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+/* A soft spotlight, 460px wide, that a layer shows through: pair with `animate-ambient-wander`. */
+@utility ambient-spotlight {
+  -webkit-mask-image: radial-gradient(circle at center, #000 0, transparent 70%);
+  mask-image: radial-gradient(circle at center, #000 0, transparent 70%);
+  -webkit-mask-size: 460px 460px;
+  mask-size: 460px 460px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 15% 25%;
+  mask-position: 15% 25%;
+}
+
+/* Film grain in the current `--ambient-color`: a noise mask over a flat fill. */
+@utility ambient-grain {
+  background-color: var(--ambient-color, var(--color-text));
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.2 0 0 0 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.2 0 0 0 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 180px 180px;
+  mask-size: 180px 180px;
+}
+
+/* Infinite loops must stop, not flicker: the global reduced-motion rule in
+ * motion.css only shortens durations. `data-ambient="static"` stops them too.
+ * `data-motion="always"` still opts out, as everywhere else. */
+@media (prefers-reduced-motion: reduce) {
+  [data-ambient]:not([data-motion="always"]),
+  [data-ambient]:not([data-motion="always"]) *,
+  .animate-bob:not([data-motion="always"]) {
+    animation: none !important;
+  }
+}
+[data-ambient="static"],
+[data-ambient="static"] * {
+  animation: none !important;
+}

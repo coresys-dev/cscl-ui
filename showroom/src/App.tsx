@@ -41,7 +41,7 @@ import {
   type MenuEntry,
 } from "../../src";
 import { WindowControls } from "../../src/tauri";
-import { CalendarScene, DashboardScene, EditorScene, MediaScene, PaletteScene } from "./Scenes2";
+import { BackdropsScene, CalendarScene, DashboardScene, EditorScene, MediaScene, PaletteScene } from "./Scenes2";
 
 // ── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -565,6 +565,7 @@ const SCENES: Record<string, { title: string; render: () => ReactNode }> = {
   media: { title: "Media", render: () => <MediaScene /> },
   dashboard: { title: "Dashboard", render: () => <DashboardScene /> },
   editor: { title: "Editor", render: () => <EditorScene /> },
+  backdrops: { title: "Backdrops", render: () => <BackdropsScene /> },
 };
 
 export function App() {
